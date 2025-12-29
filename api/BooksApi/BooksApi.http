@@ -1,0 +1,7 @@
+@BooksApi_HostAddress = https://books-api-zepw.onrender.com/odata/Books
+
+
+GET {{BooksApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

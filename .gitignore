@@ -1,0 +1,29 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Angular
+.angular/
+dist/
+out-tsc/
+.tmp/
+.cache/
+
+# Env
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+*.cache
+*.log

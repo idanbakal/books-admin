@@ -1,0 +1,152 @@
+<div class="layout" dir="rtl">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="divider"></div>
+
+      <div class="titles">
+        <h1>רבי מכר וחדשים</h1>
+        <p>ניהול ספרים • OData API • Supabase DB</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="search">
+        <input
+          type="text"
+          placeholder="חפש לפי שם ספר / מחבר…"
+          [(ngModel)]="search"
+          (input)="onSearchChange()"
+        />
+        <button class="btn btn-ghost" type="button" (click)="clearSearch()">
+          נקה
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" style="padding: 12px; opacity: 0.8">
+    טוען נתונים…
+  </div>
+
+  <!-- ADD FORM -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>הוספת ספר</h2>
+      <span class="chip">כמות ספרים: {{ books().length }}</span>
+
+      <div style="display: flex; gap: 8px; align-items: center">
+        <button class="btn btn-ghost" type="button" (click)="toggleSort('Id')">מיון: ID</button>
+<button class="btn btn-ghost" type="button" (click)="toggleSort('Title')">מיון: שם</button>
+<button class="btn btn-ghost" type="button" (click)="toggleSort('Price')">מיון: מחיר</button>
+      </div>
+    </div>
+
+    <div class="form">
+      <input type="text" placeholder="שם הספר" [(ngModel)]="newBook.title" />
+      <input type="text" placeholder="מחבר" [(ngModel)]="newBook.author" />
+
+      <input
+        type="number"
+        placeholder="מחיר (₪)"
+        [(ngModel)]="newBook.price"
+        min="1"
+        step="1"
+        inputmode="numeric"
+        (keydown)="blockMinus($event)"
+        (paste)="blockMinusPaste($event)"
+      />
+
+      <input
+        type="text"
+        placeholder="קישור לתמונה (אופציונלי)"
+        [(ngModel)]="newBook.imageUrl"
+      />
+
+      <button class="btn btn-primary" type="button" (click)="addBook()">
+        הוסף ספר
+      </button>
+    </div>
+  </section>
+
+  <!-- GRID -->
+  <section class="grid">
+    <article class="card" *ngFor="let book of books()">
+      <div class="card-media">
+       <img *ngIf="isSafeImage(book.imageUrl)" [src]="book.imageUrl" [alt]="book.title" />
+
+<div *ngIf="!isSafeImage(book.imageUrl)" class="media-placeholder">
+  <span>📚</span>
+</div>
+        <div class="card-actions">
+          <button
+            class="icon-btn"
+            type="button"
+            (click)="startEdit(book)"
+            *ngIf="!(editingBook && editingBook.id === book.id)"
+            aria-label="עריכה"
+          >
+            ✏️
+          </button>
+
+          <button
+            class="icon-btn"
+            type="button"
+            (click)="saveEdit(book)"
+            *ngIf="editingBook && editingBook.id === book.id"
+            aria-label="שמירה"
+          >
+            💾
+          </button>
+
+          <button
+            class="icon-btn"
+            type="button"
+            (click)="cancelEdit()"
+            *ngIf="editingBook && editingBook.id === book.id"
+            aria-label="ביטול"
+          >
+            ✖️
+          </button>
+
+          <button
+            class="icon-btn danger"
+            type="button"
+            (click)="deleteBook(book)"
+            aria-label="מחיקה"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body" *ngIf="!(editingBook && editingBook.id === book.id)">
+        <h3 class="title">{{ book.title }}</h3>
+        <p class="author">{{ book.author }}</p>
+
+        <div class="bottom">
+          <div class="price">{{ book.price }} ₪</div>
+        </div>
+      </div>
+
+      <div class="card-body edit" *ngIf="editingBook && editingBook.id === book.id">
+        <input [(ngModel)]="editingBook.title" placeholder="שם הספר" />
+        <input [(ngModel)]="editingBook.author" placeholder="מחבר" />
+
+        <input
+          type="number"
+          [(ngModel)]="editingBook.price"
+          placeholder="מחיר (₪)"
+          min="1"
+          step="1"
+          inputmode="numeric"
+          (keydown)="blockMinus($event)"
+          (paste)="blockMinusPaste($event)"
+        />
+
+        <input [(ngModel)]="editingBook.imageUrl" placeholder="תמונה (אופציונלי)" />
+      </div>
+    </article>
+  </section>
+</div>

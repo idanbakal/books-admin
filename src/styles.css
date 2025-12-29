@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+/* Global base (MUST be here, not in component css) */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0f1115;
+  color: rgba(255,255,255,0.92);
+  font-family: system-ui, -apple-system, "Segoe UI", Arial;
+}
+
+body{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+app-root{
+  display:block;
+  min-height:100vh;
+  background:#0f1115;
+}
